@@ -4,8 +4,9 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV, CLIENT_ORIGIN } = require('./config')
-const records = require('./records.json')
+// const records = require('./records.json')
 
+const RecordsService = require('./records/records-service')
 
 const recordsRouter = require('./records/records-router')
 const app = express()
@@ -22,8 +23,14 @@ app.use(cors({
 );
 
 // app.use('/api/records', recordsRouter)
-app.get('/api/records', (req, res) => {
-    res.json(records)
+app.get('/api/records', (req, res, next) => {
+    RecordsService.getAllRecords(
+        req.app.get('db')
+    )
+    .then(records => {
+        res.json(records)
+    })
+    .catch(next)
 })
 
 app.get('/api/*', (req, res) => {
