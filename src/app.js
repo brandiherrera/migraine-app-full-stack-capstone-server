@@ -19,7 +19,7 @@ app.use(helmet())
 app.use(cors({
     origin: CLIENT_ORIGIN
 })
-)
+);
 
 // app.use('/api/records', recordsRouter)
 app.get('/api/records', (req, res) => {
