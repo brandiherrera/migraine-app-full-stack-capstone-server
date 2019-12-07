@@ -6,14 +6,14 @@ const helmet = require('helmet')
 const { NODE_ENV, CLIENT_ORIGIN } = require('./config')
 // const records = require('./records.json')
 
-const RecordsService = require('./records/records-service')
+// const RecordsService = require('./records/records-service')
 
 const recordsRouter = require('./records/records-router')
 const app = express()
 
 const morganOption = (NODE_ENV === 'production')
-  ? 'tiny'
-  : 'common';
+    ? 'tiny'
+    : 'common';
 
 app.use(morgan(morganOption))
 app.use(helmet())
@@ -22,19 +22,20 @@ app.use(cors({
 })
 );
 
-// app.use('/api/records', recordsRouter)
-app.get('/api/records', (req, res, next) => {
-    RecordsService.getAllRecords(
-        req.app.get('db')
-    )
-    .then(records => {
-        res.json(records)
-    })
-    .catch(next)
-})
+app.use('/api/records', recordsRouter)
+app.use('/api/records/:record_id', recordsRouter)
+// app.get('/api/records', (req, res, next) => {
+//     RecordsService.getAllRecords(
+//         req.app.get('db')
+//     )
+//     .then(records => {
+//         res.json(records)
+//     })
+//     .catch(next)
+// })
 
 app.get('/api/*', (req, res) => {
-    res.json({ok: true});
+    res.json({ ok: true });
 });
 
 app.use(function errorHandler(error, req, res, next) {
