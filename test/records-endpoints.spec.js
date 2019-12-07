@@ -35,7 +35,7 @@ describe('Records Endpoints', () => {
             it(`responds with 200 and an empty list`, () => {
                 return supertest(app)
                     .get('/api/records')
-                    // .set('authorization', `basic ${process.env.API_TOKEN}`)
+                    .set('authorization', `basic ${process.env.API_TOKEN}`)
                     .expect(200, [])
             })
         })
@@ -57,6 +57,7 @@ describe('Records Endpoints', () => {
                 )
                 return supertest(app)
                     .get('/api/records')
+                    .set('authorization', `basic ${process.env.API_TOKEN}`)
                     .expect(200, expectedRecords)
             })
         })
@@ -74,7 +75,7 @@ describe('Records Endpoints', () => {
                 const expectedItems = helpers.makeRecordsArray()
                 return supertest(app)
                     .get('/api/records')
-                    // .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
+                    .set('authorization', `basic ${process.env.API_TOKEN}`)
                     .expect(200, expectedItems)
             })
 

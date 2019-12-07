@@ -11,5 +11,5 @@ INSERT INTO migraine_records (trigger, symptom, treatment, comment) VALUES
 INSERT INTO migraine_users (first_name, last_name, email, password)
 VALUES
     ('Michael', 'Scott', 'michael@dunder.com', 'password1'),
-    ('Dwight', 'Schrute', 'dwight@dunder.com', 'password'),
+    ('Dwight', 'Schrute', 'dwight@dunder.com', 'password1'),
     ('Pam', 'Beesly', 'pam@dunder.com', 'password');
