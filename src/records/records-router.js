@@ -30,13 +30,14 @@ recordsRouter
         const { /*date_created,*/ trigger, symptom, treatment, comment } = req.body
         const newRecord = { /*date_created,*/ trigger, symptom, treatment, comment } 
 
-        for (const [key, value] of Object.entries(newRecord)) {
-            if (value == null) {
+        for (const [key, value] of Object.entries(newRecord)) 
+            if (value == null) 
                 return res.status(400).json({
                     error: {message: `Missing '${key}' in request body`}
                 })
-            }
-        }
+                
+            // newRecord.user_id = req.user.id
+            
         RecordsService.insertRecord(
             req.app.get('db'),
             newRecord

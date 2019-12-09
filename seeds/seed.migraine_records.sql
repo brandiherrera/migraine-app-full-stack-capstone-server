@@ -10,6 +10,6 @@ INSERT INTO migraine_records (trigger, symptom, treatment, comment) VALUES
 
 INSERT INTO migraine_users (first_name, last_name, email, password)
 VALUES
-    ('Michael', 'Scott', 'michael@dunder.com', 'password1'),
-    ('Dwight', 'Schrute', 'dwight@dunder.com', 'password1'),
-    ('Pam', 'Beesly', 'pam@dunder.com', 'password');
+    ('Michael', 'Scott', 'michael@dunder.com', '$2a$12$JN0JlQ2LtkmGxwUVL.oFh.OP9liWyY7m..VLOOmEKruHgTOef5GL.'),
+    ('Dwight', 'Schrute', 'dwight@dunder.com', '$2a$12$eObnq8BJ.8TJWZv9fSRgAecJdebfCfjiXGiWxDj8pN4OH9bSDU4jm'),
+    ('Pam', 'Beesly', 'pam@dunder.com', '$2a$12$22M9ve9IbaqChSsa/aEw0OkSCGtqu4UglPICmtqXpnIm4LQ/jp3OC');

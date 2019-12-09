@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs')
 
 function makeUsersArray() {
     return [
@@ -95,6 +96,34 @@ function cleanTables(db) {
     )
 }
 
+// function seedUsers(db, users) {
+//     const preppedUsers = users.map(user => ({
+//         ...user,
+//         password: bcrypt.hashSync(user.password, 1)
+//     }))
+//     return db.into('migraine_users').insert(preppedUsers)
+//         .then(() =>
+//             // update the auto sequence to stay in sync
+//             db.raw(
+//                 `SELECT setval('migraine_users_id_seq', ?)`,
+//                 [users[users.length - 1].id],
+//             )
+//         )
+// }
+
+function seedRecordsTables(db, users, records = []) {
+    // use a transaction to group the queries and auto rollback on any failure
+    return db.transaction(async trx => {
+        await seedUsers(trx, users)
+        await trx.into('migraine_records').insert(records)
+        // update the auto sequence to match the forced id values
+        await trx.raw(
+            `SELECT setval('migraine_records_id_seq', ?)`,
+            [records[records.length - 1].id],
+        )
+    })
+}
+
 function seedUsers(db, users) {
     const preppedUsers = users.map(user => ({
         ...user,
@@ -110,7 +139,7 @@ function seedUsers(db, users) {
         )
 }
 
-function seedRecordsTables(db, users, records = []) {
+function seedRecordsTables(db, users, records) {
     // use a transaction to group the queries and auto rollback on any failure
     return db.transaction(async trx => {
         await seedUsers(trx, users)
@@ -118,9 +147,19 @@ function seedRecordsTables(db, users, records = []) {
         // update the auto sequence to match the forced id values
         await trx.raw(
             `SELECT setval('migraine_records_id_seq', ?)`,
-            [records[records.length - 1].id],
+            [records[records.length - 1].id]
         )
     })
+}
+    
+
+function seedMaliciousArticle(db, user, article) {
+    return seedUsers(db, [user])
+        .then(() =>
+            db
+                .into('migraine_records')
+                .insert([article])
+        )
 }
 
 function makeAuthHeader(user) {
@@ -133,5 +172,7 @@ module.exports = {
     makeRecordsFixtures,
     cleanTables,
     seedRecordsTables,
+    seedMaliciousArticle,
     makeAuthHeader,
+    seedUsers,
 }
