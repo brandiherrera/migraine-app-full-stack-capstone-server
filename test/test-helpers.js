@@ -62,6 +62,25 @@ function makeRecordsFixtures() {
     return { testUsers, testRecords }
 }
 
+function cleanTables(db) {
+    return db.transaction(trx =>
+      trx.raw(
+        `TRUNCATE
+          migraine_records,
+          migraine_users
+        `
+      )
+      .then(() =>
+        Promise.all([
+          trx.raw(`ALTER SEQUENCE migraine_records_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE migraine_users_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`SELECT setval('migraine_records_id_seq', 0)`),
+          trx.raw(`SELECT setval('migraine_users_id_seq', 0)`),
+        ])
+      )
+    )
+  }
+
 // function cleanTables(db) {
 //     return db.transaction(trx =>
 //       trx.raw(
@@ -80,21 +99,6 @@ function makeRecordsFixtures() {
 //         )
 //     )
 //   }
-function cleanTables(db) {
-    return db.transaction(trx =>
-        trx.raw(
-            `TRUNCATE
-          migraine_records
-        `
-        )
-            .then(() =>
-                Promise.all([
-                    trx.raw(`ALTER SEQUENCE migraine_records_id_seq minvalue 0 START WITH 1`),
-                    trx.raw(`SELECT setval('migraine_records_id_seq', 0)`),
-                ])
-            )
-    )
-}
 
 // function seedUsers(db, users) {
 //     const preppedUsers = users.map(user => ({
