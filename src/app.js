@@ -10,6 +10,7 @@ const { NODE_ENV, CLIENT_ORIGIN } = require('./config')
 
 const recordsRouter = require('./records/records-router')
 const authRouter = require('./auth/auth-router')
+const usersRouter = require('./users/users-router')
 const app = express()
 
 const morganOption = (NODE_ENV === 'production')
@@ -26,6 +27,7 @@ app.use(cors({
 app.use('/api/records', recordsRouter)
 app.use('/api/records/:record_id', recordsRouter)
 app.use('/api/auth', authRouter)
+app.use('/api/users', usersRouter)
 // app.get('/api/records', (req, res, next) => {
 //     RecordsService.getAllRecords(
 //         req.app.get('db')

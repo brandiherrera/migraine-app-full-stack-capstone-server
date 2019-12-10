@@ -19,7 +19,7 @@ const serializeRecord = record => ({
 
 recordsRouter
     .route('/')
-    .all(requireAuth)
+    // .all(requireAuth)
     .get((req, res, next) => {
         RecordsService.getAllRecords(req.app.get('db'))
         .then(records => {

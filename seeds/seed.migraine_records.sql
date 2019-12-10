@@ -9,7 +9,6 @@ VALUES
     ('Dwight', 'Schrute', 'dwight@dunder.com', '$2a$12$eObnq8BJ.8TJWZv9fSRgAecJdebfCfjiXGiWxDj8pN4OH9bSDU4jm'),
     ('Pam', 'Beesly', 'pam@dunder.com', '$2a$12$22M9ve9IbaqChSsa/aEw0OkSCGtqu4UglPICmtqXpnIm4LQ/jp3OC');
 
-
 INSERT INTO migraine_records (user_id, trigger, symptom, treatment, comment) VALUES
     (1, 'Lack of sleep', 'Prodrome', 'Dark room', 'This attack began mid-afternoon while working.'),
     (2, 'Anxiety', 'Pounding pain', 'Cold compress', 'This attack began in my sleep.'),
