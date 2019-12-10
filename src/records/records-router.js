@@ -2,7 +2,8 @@ const path = require('path')
 const express = require('express')
 const xss = require('xss')
 const RecordsService = require('./records-service')
-const { requireAuth } = require('../middleware/basic-auth')
+// const { requireAuth } = require('../middleware/basic-auth')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const recordsRouter = express.Router()
 const jsonParser = express.json()
@@ -36,7 +37,7 @@ recordsRouter
                     error: {message: `Missing '${key}' in request body`}
                 })
                 
-            // newRecord.user_id = req.user.id
+            newRecord.user_id = req.user.id
             
         RecordsService.insertRecord(
             req.app.get('db'),

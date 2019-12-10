@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-describe.only('Auth Endpoints', function () {
+describe('Auth Endpoints', function () {
     let db
 
     const { testUsers } = helpers.makeRecordsFixtures()
@@ -50,6 +50,7 @@ describe.only('Auth Endpoints', function () {
                     })
             })
         })
+
         it(`responds 400 'invalid email or password' when bad email`, () => {
             const userInvalidUser = { email: 'user-not', password: 'existy' }
             return supertest(app)
@@ -57,6 +58,7 @@ describe.only('Auth Endpoints', function () {
                 .send(userInvalidUser)
                 .expect(400, { error: `Incorrect email or password` })
         })
+
         it(`responds 400 'invalid email or password' when bad password`, () => {
             const userInvalidPass = { email: testUser.email, password: 'incorrect' }
             return supertest(app)
@@ -71,7 +73,7 @@ describe.only('Auth Endpoints', function () {
                 password: testUser.password,
             }
             const expectedToken = jwt.sign(
-                { user_id: testUser.id }, // payload
+                { user_id: testUser.id },
                 process.env.JWT_SECRET,
                 {
                     subject: testUser.email,

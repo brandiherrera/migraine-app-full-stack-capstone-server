@@ -10,10 +10,10 @@ describe('Records Endpoints', () => {
         testRecords,
     } = helpers.makeRecordsFixtures()
 
-     function makeAuthHeader(user) {
-           const token = Buffer.from(`${user.email}:${user.password}`).toString('base64')
-           return `Basic ${token}`
-         }
+    function makeAuthHeader(user) {
+        const token = Buffer.from(`${user.email}:${user.password}`).toString('base64')
+        return `bearer ${token}`
+    }
 
     before('make knex instance', () => {
         db = knex({
@@ -25,7 +25,7 @@ describe('Records Endpoints', () => {
 
     after('disconnect from db', () => db.destroy())
 
-    // before('cleanup', () => helpers.cleanTables(db))
+    before('cleanup', () => helpers.cleanTables(db))
     // before('clean the table', () => db('migraine_records').truncate())
 
     afterEach('cleanup', () => helpers.cleanTables(db))
@@ -35,7 +35,7 @@ describe('Records Endpoints', () => {
             it(`responds with 200 and an empty list`, () => {
                 return supertest(app)
                     .get('/api/records')
-                    .set('authorization', `basic ${process.env.API_TOKEN}`)
+                    .set('Authorization', `bearer ${process.env.API_TOKEN}`)
                     .expect(200, [])
             })
         })
@@ -57,7 +57,7 @@ describe('Records Endpoints', () => {
                 )
                 return supertest(app)
                     .get('/api/records')
-                    .set('authorization', `basic ${process.env.API_TOKEN}`)
+                    .set('authorization', `bearer ${process.env.API_TOKEN}`)
                     .expect(200, expectedRecords)
             })
         })
@@ -65,20 +65,20 @@ describe('Records Endpoints', () => {
     })
     // })
 
-    describe('GET /api/records', () => {
-        context(`Given there are records`, () => {
-            const testItems = helpers.makeRecordsArray()
-            beforeEach('insert records', () => {
-                return testItems
-            })
-            it(`responds with 200 and records`, () => {
-                const expectedItems = helpers.makeRecordsArray()
-                return supertest(app)
-                    .get('/api/records')
-                    .set('authorization', `basic ${process.env.API_TOKEN}`)
-                    .expect(200, expectedItems)
-            })
+    // describe('GET /api/records', () => {
+    //     context(`Given there are records`, () => {
+    //         const testItems = helpers.makeRecordsArray()
+    //         beforeEach('insert records', () => {
+    //             return testItems
+    //         })
+    //         it(`responds with 200 and records`, () => {
+    //             const expectedItems = helpers.makeRecordsArray()
+    //             return supertest(app)
+    //                 .get('/api/records')
+    //                 .set('authorization', `bearer ${process.env.API_TOKEN}`)
+    //                 .expect(200, expectedItems)
+    //         })
 
-        })
-    })
+    //     })
+    // })
 })
