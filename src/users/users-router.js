@@ -4,6 +4,10 @@ const path = require('path')
 const usersRouter = express.Router()
 const jsonBodyParser = express.json()
 const UsersService = require('./users-service')
+const RecordsService = require('../records/records-service')
+const { requireAuth } = require('../middleware/jwt-auth')
+
+const jsonParser = express.json()
 
 const serializeUser = user => ({
     user_id: user.id,
@@ -12,6 +16,15 @@ const serializeUser = user => ({
     email: xss(user.email),
     password: xss(user.password),
     date_created: new Date(user.date_created),
+})
+
+const serializeRecord = record => ({
+    id: record.id,
+    date_created: record.date_created,
+    trigger: record.trigger,
+    symptom: record.symptom,
+    treatment: record.treatment,
+    comment: xss(record.comment),
 })
 
 usersRouter
@@ -97,5 +110,96 @@ usersRouter
             })
             .catch(next)
     })
+
+usersRouter
+    .route('/:user_id/records')
+    .all((req, res, next) => {
+        const { user_id } = req.params;
+        UsersService.getRecordsById(req.app.get('db'), user_id)
+            .then(record => {
+                if (!record) {
+                    return res
+                        .status(404).json({ error: { message: `No records exist.` } })
+                        // .send({ error: { message: `User doesn't exist.` } })
+                }
+                res.record = record
+                next()
+            })
+            .catch(next)
+    })
+    .get((req, res) => {
+        res.json(res.record)
+    })
+    .post(requireAuth, jsonParser, (req, res, next) => {
+        const { trigger, symptom, treatment, comment } = req.body
+        const newRecord = { /*date_created,*/ trigger, symptom, treatment, comment } 
+
+        for (const [key, value] of Object.entries(newRecord)) 
+            if (value == null) 
+                return res.status(400).json({
+                    error: {message: `Missing '${key}' in request body`}
+                })
+                
+            newRecord.user_id = req.user.id
+            
+        RecordsService.insertUserRecord(
+            req.app.get('db'),
+            newRecord
+        )
+            .then(record => {
+                res
+                    .status(201)
+                    // .location(path.posix.join(req.originalUrl, `${req.user.id}/records/${record.id}`))
+                    .json(serializeRecord(record))
+            })
+            .catch(next)
+    })
+    // TODO -- Need to make a delete service for this endpoint and (??add into code)
+    .delete((req, res, next) => {
+        const { user_id } = req.params;
+        UsersService.deleteUser(
+            req.app.get('db'),
+            user_id
+        )
+            .then(numRowsAffected => {
+                res.status(204).end()
+            })
+            .catch(next)
+    })
+
+    // recordsRouter
+    // .route('/:user_id/records')
+    // // .all(requireAuth)
+    // .get((req, res, next) => {
+    //     RecordsService.getAllRecords(req.app.get('db'))
+    //     .then(records => {
+    //         res.json(records)
+    //     })
+    //     .catch(next)
+    // })
+    // .post(requireAuth, jsonParser, (req, res, next) => {
+    //     const { /*date_created,*/ trigger, symptom, treatment, comment } = req.body
+    //     const newRecord = { /*date_created,*/ trigger, symptom, treatment, comment } 
+
+    //     for (const [key, value] of Object.entries(newRecord)) 
+    //         if (value == null) 
+    //             return res.status(400).json({
+    //                 error: {message: `Missing '${key}' in request body`}
+    //             })
+                
+    //         newRecord.user_id = req.user.id
+            
+    //     RecordsService.insertRecord(
+    //         req.app.get('db'),
+    //         newRecord
+    //     )
+    //         .then(record => {
+    //             res
+    //                 .status(201)
+    //                 .location(path.posix.join(req.originalUrl, `${record.id}`))
+    //                 .json(serializeRecord(record))
+    //         })
+    //         .catch(next)
+    // })
 
 module.exports = usersRouter

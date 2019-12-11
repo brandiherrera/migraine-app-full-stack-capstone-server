@@ -49,6 +49,13 @@ const UsersService = {
     getById(knex, id) {
         return knex.from('migraine_users').select('*').where('id', id).first()
     },
+    // insertById(),
+    getRecordsById(knex, id) {
+        return knex
+            .from('migraine_records')
+            .select('*')
+            .where('user_id', id)
+    }
 }
 
 module.exports = UsersService

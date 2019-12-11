@@ -11,6 +11,16 @@ const RecordsService = {
                 return rows[0]
             })
     },
+    insertUserRecord(knex, newRecord) {
+        return knex
+            .insert(newRecord)
+            .into('migraine_records')
+            .where('user_id', newRecord.user_id)
+            .returning('*')
+            .then(rows => {
+                return rows[0]
+            })
+    },
     deleteRecord(knex, id) {
         return knex('migraine_records')
             .where({ id })
