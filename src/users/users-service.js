@@ -2,19 +2,22 @@ const xss = require('xss')
 const bcrypt = require('bcryptjs')
 
 const UsersService = {
+    getAllUsers(knex) {
+        return knex.select('*').from('migraine_users')
+    },
     hasUserWithUserName(db, email) {
-          return db('migraine_users')
+        return db('migraine_users')
             .where({ email })
             .first()
             .then(user => !!user)
-        },
+    },
     insertUser(db, newUser) {
-          return db
+        return db
             .insert(newUser)
             .into('migraine_users')
             .returning('*')
             .then(([user]) => user)
-        },
+    },
     validatePassword(password) {
         if (password.length < 6) {
             return 'Password must be longer than 6 characters'
@@ -27,17 +30,25 @@ const UsersService = {
         }
     },
     hashPassword(password) {
-          return bcrypt.hash(password, 12)
-        },
+        return bcrypt.hash(password, 12)
+    },
     serializeUser(user) {
-          return {
+        return {
             id: user.id,
             first_name: xss(user.first_name),
-            email: xss(user.email),
             last_name: xss(user.last_name),
+            email: xss(user.email),
             date_created: new Date(user.date_created),
-          }
-        },
+        }
+    },
+    deleteUser(knex, id) {
+        return knex('migraine_users')
+            .where({ id })
+            .delete()
+    },
+    getById(knex, id) {
+        return knex.from('migraine_users').select('*').where('id', id).first()
+    },
 }
 
 module.exports = UsersService

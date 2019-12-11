@@ -28,15 +28,6 @@ app.use('/api/records', recordsRouter)
 app.use('/api/records/:record_id', recordsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
-// app.get('/api/records', (req, res, next) => {
-//     RecordsService.getAllRecords(
-//         req.app.get('db')
-//     )
-//     .then(records => {
-//         res.json(records)
-//     })
-//     .catch(next)
-// })
 
 app.get('/api/*', (req, res) => {
     res.json({ ok: true });
