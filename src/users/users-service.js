@@ -55,7 +55,13 @@ const UsersService = {
             .from('migraine_records')
             .select('*')
             .where('user_id', id)
-    }
+    },
+    // deleteRecordById(knex, id) {
+    //     return knex
+    //         .from('migraine_records')
+    //         .where( {id}  AND ('user_id', user_id))
+    //         .delete()
+    // }
 }
 
 module.exports = UsersService

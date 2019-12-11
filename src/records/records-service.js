@@ -1,4 +1,5 @@
 const RecordsService = {
+    
     getAllRecords(knex) {
         return knex.select('*').from('migraine_records')
     },

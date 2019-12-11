@@ -167,6 +167,35 @@ usersRouter
             .catch(next)
     })
 
+    usersRouter
+        .route('/:user_id/records/:record_id')
+        .all(requireAuth)
+        .all((req, res, next) => {
+            RecordsService.getById(
+                req.app.get('db'),
+                req.params.record_id
+            )
+                .then(record => {
+                    if (!record) {
+                        return res.status(404).json({
+                            error: { message: `Record doesn't exist` }
+                        })
+                    }
+                    res.record = record // save the record for the next middleware
+                    next()
+                })
+                .catch(next)
+        })
+        .delete((req, res, next) => {
+            RecordsService.deleteRecord(
+                req.app.get('db'),
+                req.params.record_id
+            )
+                .then(() => {
+                    res.status(204).end()
+                })
+                .catch(next)
+            })
     // recordsRouter
     // .route('/:user_id/records')
     // // .all(requireAuth)
