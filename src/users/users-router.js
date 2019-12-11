@@ -6,7 +6,7 @@ const jsonBodyParser = express.json()
 const UsersService = require('./users-service')
 
 const serializeUser = user => ({
-    id: user.id,
+    user_id: user.id,
     first_name: xss(user.first_name),
     last_name: xss(user.last_name),
     email: xss(user.email),
@@ -70,8 +70,8 @@ usersRouter
 usersRouter
     .route('/:user_id')
     .all((req, res, next) => {
-        const { id } = req.params;
-        UsersService.getById(req.app.get('db'), id)
+        const { user_id } = req.params;
+        UsersService.getById(req.app.get('db'), user_id)
             .then(user => {
                 if (!user) {
                     return res
@@ -87,10 +87,10 @@ usersRouter
         res.json(UsersService.serializeUser(res.user))
     })
     .delete((req, res, next) => {
-        const { id } = req.params;
+        const { user_id } = req.params;
         UsersService.deleteUser(
             req.app.get('db'),
-            id
+            user_id
         )
             .then(numRowsAffected => {
                 res.status(204).end()
