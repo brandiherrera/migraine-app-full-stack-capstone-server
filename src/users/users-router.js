@@ -120,7 +120,7 @@ usersRouter
                 if (!record) {
                     return res
                         .status(404).json({ error: { message: `No records exist.` } })
-                        // .send({ error: { message: `User doesn't exist.` } })
+                    // .send({ error: { message: `User doesn't exist.` } })
                 }
                 res.record = record
                 next()
@@ -131,17 +131,17 @@ usersRouter
         res.json(res.record)
     })
     .post(requireAuth, jsonParser, (req, res, next) => {
-        const { trigger, symptom, treatment, comment } = req.body
-        const newRecord = { /*date_created,*/ trigger, symptom, treatment, comment } 
+        const { location, time, onset, intensity, trigger, symptom, treatment, comment } = req.body
+        const newRecord = { /*date,*/ location, time, onset, intensity, trigger, symptom, treatment, comment }
 
-        for (const [key, value] of Object.entries(newRecord)) 
-            if (value == null) 
+        for (const [key, value] of Object.entries(newRecord))
+            if (value == null)
                 return res.status(400).json({
-                    error: {message: `Missing '${key}' in request body`}
+                    error: { message: `Missing '${key}' in request body` }
                 })
-                
-            newRecord.user_id = req.user.id
-            
+
+        newRecord.user_id = req.user.id
+
         RecordsService.insertUserRecord(
             req.app.get('db'),
             newRecord
@@ -167,68 +167,109 @@ usersRouter
             .catch(next)
     })
 
-    usersRouter
-        .route('/:user_id/records/:record_id')
-        .all(requireAuth)
-        .all((req, res, next) => {
-            RecordsService.getById(
-                req.app.get('db'),
-                req.params.record_id
-            )
-                .then(record => {
-                    if (!record) {
-                        return res.status(404).json({
-                            error: { message: `Record doesn't exist` }
-                        })
-                    }
-                    res.record = record // save the record for the next middleware
-                    next()
-                })
-                .catch(next)
-        })
-        .delete((req, res, next) => {
-            RecordsService.deleteRecord(
-                req.app.get('db'),
-                req.params.record_id
-            )
-                .then(() => {
-                    res.status(204).end()
-                })
-                .catch(next)
+usersRouter
+    .route('/:user_id/records/:record_id')
+    .all(requireAuth)
+    .all((req, res, next) => {
+        RecordsService.getById(
+            req.app.get('db'),
+            req.params.record_id
+        )
+            .then(record => {
+                if (!record) {
+                    return res.status(404).json({
+                        error: { message: `Record doesn't exist` }
+                    })
+                }
+                res.record = record // save the record for the next middleware
+                next()
             })
-    // recordsRouter
-    // .route('/:user_id/records')
-    // // .all(requireAuth)
-    // .get((req, res, next) => {
-    //     RecordsService.getAllRecords(req.app.get('db'))
-    //     .then(records => {
-    //         res.json(records)
-    //     })
-    //     .catch(next)
-    // })
-    // .post(requireAuth, jsonParser, (req, res, next) => {
-    //     const { /*date_created,*/ trigger, symptom, treatment, comment } = req.body
-    //     const newRecord = { /*date_created,*/ trigger, symptom, treatment, comment } 
+            .catch(next)
+    })
+    .delete((req, res, next) => {
+        RecordsService.deleteRecord(
+            req.app.get('db'),
+            req.params.record_id
+        )
+            .then(() => {
+                res.status(204).end()
+            })
+            .catch(next)
+    })
 
-    //     for (const [key, value] of Object.entries(newRecord)) 
-    //         if (value == null) 
-    //             return res.status(400).json({
-    //                 error: {message: `Missing '${key}' in request body`}
-    //             })
-                
-    //         newRecord.user_id = req.user.id
-            
-    //     RecordsService.insertRecord(
-    //         req.app.get('db'),
-    //         newRecord
-    //     )
-    //         .then(record => {
-    //             res
-    //                 .status(201)
-    //                 .location(path.posix.join(req.originalUrl, `${record.id}`))
-    //                 .json(serializeRecord(record))
+usersRouter
+    .route('/:user_id/stats')
+    .all(requireAuth)
+    // .all((req, res, next) => {
+    //     const { user_id } = req.params;
+    //     UsersService.getHighestTrigger(req.app.get('db'), user_id)
+    //         .then(trigger => {
+    //             if (!trigger) {
+    //                 return res
+    //                     // .status(404).json({ error: { message: `No records exist.` } })
+    //                 .send({ error: { message: `No triggers recorded yet.` } })
+    //             }
+    //             res.trigger = trigger
+    //             next()
     //         })
     //         .catch(next)
     // })
+    .all((req, res, next) => {
+        const { user_id, location, time, onset, intensity, trigger, symptom, treatment } = req.params;
+        // let stat = [ location, time, onset, intensity, trigger, symptom, treatment, comment ]
+        UsersService.getHighestStat(req.app.get('db'), user_id, location, time, onset, intensity, trigger, symptom, treatment)
+            .then(data => {
+                if (!data) {
+                    return res
+                        // .status(404).json({ error: { message: `No records exist.` } })
+                    .send({ error: { message: `No statistic recorded yet.` } })
+                }
+                res.data = data
+                next()
+            })
+            .catch(next)
+    })
+    // .get((req, res) => {
+    //     res.json(res.trigger)
+    //     // res.json('hello')
+    // })
+    .get((req, res) => {
+        res.json(res.data)
+        // res.json('hello')
+    })
+// recordsRouter
+// .route('/:user_id/records')
+// // .all(requireAuth)
+// .get((req, res, next) => {
+//     RecordsService.getAllRecords(req.app.get('db'))
+//     .then(records => {
+//         res.json(records)
+//     })
+//     .catch(next)
+// })
+// .post(requireAuth, jsonParser, (req, res, next) => {
+//     const { /*date_created,*/ trigger, symptom, treatment, comment } = req.body
+//     const newRecord = { /*date_created,*/ trigger, symptom, treatment, comment } 
+
+//     for (const [key, value] of Object.entries(newRecord)) 
+//         if (value == null) 
+//             return res.status(400).json({
+//                 error: {message: `Missing '${key}' in request body`}
+//             })
+
+//         newRecord.user_id = req.user.id
+
+//     RecordsService.insertRecord(
+//         req.app.get('db'),
+//         newRecord
+//     )
+//         .then(record => {
+//             res
+//                 .status(201)
+//                 .location(path.posix.join(req.originalUrl, `${record.id}`))
+//                 .json(serializeRecord(record))
+//         })
+//         .catch(next)
+// })
 
 module.exports = usersRouter

@@ -49,13 +49,34 @@ const UsersService = {
     getById(knex, id) {
         return knex.from('migraine_users').select('*').where('id', id).first()
     },
-    // insertById(),
     getRecordsById(knex, id) {
         return knex
             .from('migraine_records')
             .select('*')
             .where('user_id', id)
     },
+    getHighestTrigger(knex, id) {
+        return knex
+            .from('migraine_records')
+            .where('user_id', id)
+            .select('trigger')
+            .count('*')
+            .groupBy('trigger')
+            .orderBy('count', 'desc')
+            .first()
+    },
+    getHighestStat(knex, id) {
+        return knex
+            .from('migraine_records')
+            .where('user_id', id)
+            .select('location').count('*').groupBy('location').orderBy('count', 'desc').first()
+            .select('time').count('*').groupBy('time').orderBy('count', 'desc').first()
+            .select('onset').count('*').groupBy('onset').orderBy('count', 'desc').first()
+            .select('intensity').avg('intensity').groupBy('intensity').orderBy('count', 'desc').first()
+            .select('trigger').count('*').groupBy('trigger').orderBy('count', 'desc').first()
+            .select('symptom').count('*').groupBy('symptom').orderBy('count', 'desc').first()
+            .select('treatment').count('*').groupBy('treatment').orderBy('count', 'desc').first()
+    }
     // deleteRecordById(knex, id) {
     //     return knex
     //         .from('migraine_records')
