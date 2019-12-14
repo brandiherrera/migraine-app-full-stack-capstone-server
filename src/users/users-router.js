@@ -196,6 +196,20 @@ usersRouter
             })
             .catch(next)
     })
+         .patch(jsonParser, (req, res, next) => {
+            const { location, time, onset, intensity, trigger, symptom, treatment, comment } = req.body
+            const recordToUpdate = { location, time, onset, intensity, trigger, symptom, treatment, comment }
+        
+           RecordsService.updateRecord(
+             req.app.get('db'),
+             req.params.record_id,
+             recordToUpdate
+           )
+             .then(numRowsAffected => {
+               res.status(204).end()
+             })
+             .catch(next)
+          })
 
 usersRouter
     .route('/:user_id/stats')
