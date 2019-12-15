@@ -186,6 +186,9 @@ usersRouter
             })
             .catch(next)
     })
+    .get((req, res) => {
+        res.json(res.record)
+    })
     .delete((req, res, next) => {
         RecordsService.deleteRecord(
             req.app.get('db'),
