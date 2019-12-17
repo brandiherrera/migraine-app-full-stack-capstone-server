@@ -34,7 +34,7 @@ describe('Users Endpoints', function () {
                 )
             )
 
-            const requiredFields = ['email', 'password', 'first_name']
+            const requiredFields = ['email', 'password', 'first_name', 'last_name']
 
             requiredFields.forEach(field => {
                 const registerAttemptBody = {
@@ -127,7 +127,7 @@ describe('Users Endpoints', function () {
                     email: 'testemail',
                     password: '11AAaa!!',
                     first_name: 'testfirst_name',
-                    last_name: 'testlastname',
+                    last_name: 'testlast_name',
                 }
                 return supertest(app)
                     .post('/api/users')
@@ -137,7 +137,7 @@ describe('Users Endpoints', function () {
                         expect(res.body).to.have.property('id')
                         expect(res.body.email).to.eql(newUser.email)
                         expect(res.body.first_name).to.eql(newUser.first_name)
-                        expect(res.body.last_name).to.eql('')
+                        expect(res.body.last_name).to.eql(newUser.last_name)
                         expect(res.body).to.not.have.property('password')
                         expect(res.headers.location).to.eql(`/api/users/${res.body.id}`)
                         const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
@@ -153,7 +153,7 @@ describe('Users Endpoints', function () {
                             .then(row => {
                                 expect(row.email).to.eql(newUser.email)
                                 expect(row.first_name).to.eql(newUser.first_name)
-                                expect(row.last_name).to.eql(null)
+                                expect(row.last_name).to.eql(newUser.last_name)
                                 const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
                                 const actualDate = new Date(row.date_created).toLocaleString()
                                 expect(actualDate).to.eql(expectedDate)

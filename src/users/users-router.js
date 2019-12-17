@@ -113,6 +113,7 @@ usersRouter
 
 usersRouter
     .route('/:user_id/records')
+    .all(requireAuth)
     .all((req, res, next) => {
         const { user_id } = req.params;
         UsersService.getRecordsById(req.app.get('db'), user_id)
@@ -246,13 +247,8 @@ usersRouter
             })
             .catch(next)
     })
-    // .get((req, res) => {
-    //     res.json(res.trigger)
-    //     // res.json('hello')
-    // })
     .get((req, res) => {
         res.json(res.data)
-        // res.json('hello')
     })
 // recordsRouter
 // .route('/:user_id/records')
