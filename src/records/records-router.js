@@ -11,6 +11,11 @@ const jsonParser = express.json()
 const serializeRecord = record => ({
     id: record.id,
     date_created: record.date_created,
+    intensity: record.intensity,
+    location: record.location,
+    onset: record.onset,
+    symptom: record.symptom,
+    time: record.time,
     trigger: record.trigger,
     symptom: record.symptom,
     treatment: record.treatment,

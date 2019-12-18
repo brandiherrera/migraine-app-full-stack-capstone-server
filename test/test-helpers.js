@@ -31,7 +31,7 @@ function makeRecordsArray() {
         {
             id: 1,
             user_id: 1,
-            date_created: '2019-12-18T00:31:20.468Z',
+            date_created: '2019-12-18T08:31:20.468Z',
             location: 'Home',
             time: 'Morning',
             onset: 'Prodrome',
@@ -44,7 +44,7 @@ function makeRecordsArray() {
         {
             id: 2,
             user_id: 2,
-            date_created: '2019-12-18T00:31:20.468Z',
+            date_created: '2019-12-18T08:31:20.468Z',
             location: 'Home',
             time: 'Morning',
             onset: 'Prodrome',
@@ -57,7 +57,7 @@ function makeRecordsArray() {
         {
             id: 3,
             user_id: 1,
-            date_created: '2019-12-18T00:31:20.468Z',
+            date_created: '2019-12-18T08:31:20.468Z',
             location: 'Home',
             time: 'Morning',
             onset: 'Prodrome',
@@ -130,22 +130,6 @@ function makeExpectedRecord(users, record = []) {
         comment: record.comment,
     }
 }
-
-// function makeThisRecord(user, record=[]) {
-//     return {
-//         id: record.id,
-//         user_id: record.user_id,
-//         date_created: record.date_created,
-//         location: record.location,
-//         time: record.time,
-//         onset: record.onset,
-//         intensity: record.intensity,
-//         trigger: record.trigger,
-//         symptom: record.symptom,
-//         treatment: record.treatment,
-//         comment: record.comment,
-//     }
-// }
 
 function makeRecordsFixtures() {
     const testUsers = makeUsersArray()

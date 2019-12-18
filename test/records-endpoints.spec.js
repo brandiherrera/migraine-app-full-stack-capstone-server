@@ -22,17 +22,17 @@ describe('Records Endpoints', () => {
 
     before('cleanup', () => helpers.cleanTables(db))
     // before('clean the table', () => db('migraine_records').truncate())
-    beforeEach('insert users', () =>
-    helpers.seedUsers(
-        db,
-        testUsers,
-    )
-)
 
     afterEach('cleanup', () => helpers.cleanTables(db))
 
     describe('GET /api/users/:user_id/records', () => {
         context(`Given no records`, () => {
+            beforeEach('insert users', () =>
+                helpers.seedUsers(
+                    db,
+                    testUsers,
+                )
+            )
             it(`responds with 200 and an empty list`, () => {
                 // const recordId 
                 const validUser = testUsers[0]
