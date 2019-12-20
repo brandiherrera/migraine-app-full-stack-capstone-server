@@ -70,16 +70,16 @@ const UsersService = {
             .select('*')
             .where('user_id', id)
     },
-    getHighestTrigger(knex, id) {
-        return knex
-            .from('migraine_records')
-            .where('user_id', id)
-            .select('trigger')
-            .count('*')
-            .groupBy('trigger')
-            .orderBy('count', 'desc')
-            .first()
-    },
+    // getHighestTrigger(knex, id) {
+    //     return knex
+    //         .from('migraine_records')
+    //         .where('user_id', id)
+    //         .select('trigger')
+    //         .count('*')
+    //         .groupBy('trigger')
+    //         .orderBy('count', 'desc')
+    //         .first()
+    // },
     getHighestStat(knex, id) {
         return knex
             .from('migraine_records')

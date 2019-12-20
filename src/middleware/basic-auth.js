@@ -20,9 +20,6 @@ function requireAuth(req, res, next) {
         req.app.get('db'),
         tokenUserName
     )
-        // req.app.get('db')('migraine_users')
-        //     .where({ email: tokenUserName })
-        //     .first()
         .then(user => {
             if (!user) {
                 return res.status(401).json({ error: 'Unauthorized request' })

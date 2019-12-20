@@ -83,66 +83,24 @@ function makeRecordsArray() {
             comment: 'dark room helped',
         }
     ]
-        }
-        // {
-        //     "comment": "level 7 pain",
-        //     // "date_created": "01/10/2019",
-        //     "location": "Home",
-        //     "time": "Morning",
-        //     "onset": "Prodrome",
-        //     "intensity": 6,
-        //     "id": 1,
-        //     "user_id": 1,
-        //     "symptom": "prodrome",
-        //     "treatment": "caffeine",
-        //     "trigger": "lack of sleep",
-        // },
-        // {
-        //     "comment": "came on while sleeping ",
-        //     // "date_created": "08/15/2019",
-        //     "location": "Home",
-        //     "time": "Morning",
-        //     "onset": "Prodrome",
-        //     "intensity": 8,
-        //     "id": 2,
-        //     "user_id": 2,
-        //     "symptom": "aura",
-        //     "treatment": "medicine, sleep",
-        //     "trigger": "food",
-        // },
-        // {
-        //     "comment": "dark room helped",
-        //     // "date_created": "11/01/2019",
-        //     "location": "Home",
-        //     "time": "Morning",
-        //     "onset": "Prodrome",
-        //     "intensity": 4,
-        //     "id": 3,
-        //     "user_id": 1,
-        //     "symptom": "blurred vision, headache prior",
-        //     "treatment": "caffeine, medicine",
-        //     "trigger": "dehydration",
-        // }
-//     ]
-// }
-// }
+}
 
 function makeExpectedRecord(users, record = []) {
     const user = users
         .find(user => user.id == record.user_id)
-// const records = {
-//     id: record.id,
-//         user_id: record.user_id,
-//         // date_created: record.date_created,
-//         location: record.location,
-//         time: record.time,
-//         onset: record.onset,
-//         intensity: record.intensity,
-//         trigger: record.trigger,
-//         symptom: record.symptom,
-//         treatment: record.treatment,
-//         comment: record.comment,
-// }
+    // const records = {
+    //     id: record.id,
+    //         user_id: record.user_id,
+    //         // date_created: record.date_created,
+    //         location: record.location,
+    //         time: record.time,
+    //         onset: record.onset,
+    //         intensity: record.intensity,
+    //         trigger: record.trigger,
+    //         symptom: record.symptom,
+    //         treatment: record.treatment,
+    //         comment: record.comment,
+    // }
     return {
         // id: record.id,
         // user_id: record.user_id,
@@ -155,24 +113,23 @@ function makeExpectedRecord(users, record = []) {
         // symptom: record.symptom,
         // treatment: record.treatment,
         // comment: record.comment,
-    
-    serializeRecord(record)
-    {
-        return {
-        id: record.id,
-        // date_created: record.date_created,
-        intensity: record.intensity,
-        location: record.location,
-        onset: record.onset,
-        symptom: record.symptom,
-        time: record.time,
-        trigger: record.trigger,
-        symptom: record.symptom,
-        treatment: record.treatment,
-        comment: xss(record.comment),
+
+        serializeRecord(record) {
+            return {
+                id: record.id,
+                // date_created: record.date_created,
+                intensity: record.intensity,
+                location: record.location,
+                onset: record.onset,
+                symptom: record.symptom,
+                time: record.time,
+                trigger: record.trigger,
+                symptom: record.symptom,
+                treatment: record.treatment,
+                comment: xss(record.comment),
+            }
         }
     }
-}
 }
 
 function makeRecordsFixtures() {

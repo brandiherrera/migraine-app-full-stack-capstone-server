@@ -126,7 +126,6 @@ usersRouter
                 if (!record) {
                     return res
                         .status(404).json({ error: { message: `No records exist.` } })
-                    // .send({ error: { message: `User doesn't exist.` } })
                 }
                 res.record = record
                 next()
@@ -141,7 +140,7 @@ usersRouter
     // })
     .post(requireAuth, jsonParser, (req, res, next) => {
         const { location, time, onset, intensity, trigger, symptom, treatment, comment } = req.body
-        const newRecord = { /*date,*/ location, time, onset, intensity, trigger, symptom, treatment, comment }
+        const newRecord = { location, time, onset, intensity, trigger, symptom, treatment, comment }
 
         for (const [key, value] of Object.entries(newRecord))
             if (value == null)
@@ -163,7 +162,6 @@ usersRouter
             })
             .catch(next)
     })
-    // TODO -- Need to make a delete service for this endpoint and (??add into code)
     .delete((req, res, next) => {
         const { user_id } = req.params;
         UsersService.deleteUser(

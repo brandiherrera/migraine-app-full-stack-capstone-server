@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-// const UsersService = require('./users-service')
 
 describe('Users Endpoints', function () {
     let db
@@ -87,8 +86,6 @@ describe('Users Endpoints', function () {
                         first_name: 'testfirst_name',
                         last_name: 'testlast_name',
                     }
-                    // console.log(userLongPassword)
-                    // console.log(userLongPassword.password.length)
                     return supertest(app)
                         .post('/api/users')
                         .send(userLongPassword)

@@ -4,9 +4,6 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV, CLIENT_ORIGIN } = require('./config')
-// const records = require('./records.json')
-
-// const RecordsService = require('./records/records-service')
 
 const recordsRouter = require('./records/records-router')
 const authRouter = require('./auth/auth-router')

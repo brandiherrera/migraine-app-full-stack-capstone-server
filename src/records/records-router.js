@@ -33,8 +33,8 @@ recordsRouter
         .catch(next)
     })
     .post(requireAuth, jsonParser, (req, res, next) => {
-        const { /*date_created,*/ trigger, symptom, treatment, comment } = req.body
-        const newRecord = { /*date_created,*/ trigger, symptom, treatment, comment } 
+        const { trigger, symptom, treatment, comment } = req.body
+        const newRecord = { trigger, symptom, treatment, comment } 
 
         for (const [key, value] of Object.entries(newRecord)) 
             if (value == null) 
@@ -89,9 +89,6 @@ recordsRouter
             })
             .catch(next)
         })
-    // .patch(jsonParser, (req, res, next) => {
-        
-    // })
 
 module.exports = recordsRouter
 
