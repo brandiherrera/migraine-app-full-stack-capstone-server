@@ -20,7 +20,7 @@ const serializeUser = user => ({
 
 const serializeRecord = record => ({
     id: record.id,
-    date_created: record.date_created,
+    // date_created: new Date(record.date_created),
     intensity: record.intensity,
     location: record.location,
     onset: record.onset,
@@ -136,6 +136,9 @@ usersRouter
     .get((req, res) => {
         res.json(res.record)
     })
+    // .get((req, res, next) => {
+    //     res.json(UsersService.serializeRecord(res.record))
+    // })
     .post(requireAuth, jsonParser, (req, res, next) => {
         const { location, time, onset, intensity, trigger, symptom, treatment, comment } = req.body
         const newRecord = { /*date,*/ location, time, onset, intensity, trigger, symptom, treatment, comment }

@@ -41,6 +41,21 @@ const UsersService = {
             date_created: new Date(user.date_created),
         }
     },
+    serializeRecord(record){
+        return {
+        id: record.id,
+        // date_created: new Date(record.date_created),
+        intensity: record.intensity,
+        location: record.location,
+        onset: record.onset,
+        symptom: record.symptom,
+        time: record.time,
+        trigger: record.trigger,
+        symptom: record.symptom,
+        treatment: record.treatment,
+        comment: xss(record.comment),
+        }
+    },
     deleteUser(knex, id) {
         return knex('migraine_users')
             .where({ id })

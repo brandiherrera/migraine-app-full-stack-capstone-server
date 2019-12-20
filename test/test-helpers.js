@@ -1,5 +1,20 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+// const xss = require('xss')
+
+// const serializeRecord = record => ({
+//     id: record.id,
+//     // date_created: new Date(record.date_created),
+//     intensity: record.intensity,
+//     location: record.location,
+//     onset: record.onset,
+//     symptom: record.symptom,
+//     time: record.time,
+//     trigger: record.trigger,
+//     symptom: record.symptom,
+//     treatment: record.treatment,
+//     comment: xss(record.comment),
+// })
 
 function makeUsersArray() {
     return [
@@ -31,7 +46,7 @@ function makeRecordsArray() {
         {
             id: 1,
             user_id: 1,
-            date_created: '2019-12-18T08:31:20.468Z',
+            // date_created: '2019-12-18T08:31:20.468Z',
             location: 'Home',
             time: 'Morning',
             onset: 'Prodrome',
@@ -44,7 +59,7 @@ function makeRecordsArray() {
         {
             id: 2,
             user_id: 2,
-            date_created: '2019-12-18T08:31:20.468Z',
+            // date_created: '2019-12-18T08:31:20.468Z',
             location: 'Home',
             time: 'Morning',
             onset: 'Prodrome',
@@ -57,7 +72,7 @@ function makeRecordsArray() {
         {
             id: 3,
             user_id: 1,
-            date_created: '2019-12-18T08:31:20.468Z',
+            // date_created: '2019-12-18T08:31:20.468Z',
             location: 'Home',
             time: 'Morning',
             onset: 'Prodrome',
@@ -65,7 +80,7 @@ function makeRecordsArray() {
             trigger: 'dehydration',
             symptom: 'blurred vision, headache prior',
             treatment: 'caffeine, medicine',
-            comment: 'dark room helped'
+            comment: 'dark room helped',
         }
     ]
         }
@@ -115,20 +130,49 @@ function makeRecordsArray() {
 function makeExpectedRecord(users, record = []) {
     const user = users
         .find(user => user.id == record.user_id)
-
+// const records = {
+//     id: record.id,
+//         user_id: record.user_id,
+//         // date_created: record.date_created,
+//         location: record.location,
+//         time: record.time,
+//         onset: record.onset,
+//         intensity: record.intensity,
+//         trigger: record.trigger,
+//         symptom: record.symptom,
+//         treatment: record.treatment,
+//         comment: record.comment,
+// }
     return {
+        // id: record.id,
+        // user_id: record.user_id,
+        // // date_created: record.date_created,
+        // location: record.location,
+        // time: record.time,
+        // onset: record.onset,
+        // intensity: record.intensity,
+        // trigger: record.trigger,
+        // symptom: record.symptom,
+        // treatment: record.treatment,
+        // comment: record.comment,
+    
+    serializeRecord(record)
+    {
+        return {
         id: record.id,
-        user_id: record.user_id,
-        date_created: record.date_created,
-        location: record.location,
-        time: record.time,
-        onset: record.onset,
+        // date_created: record.date_created,
         intensity: record.intensity,
+        location: record.location,
+        onset: record.onset,
+        symptom: record.symptom,
+        time: record.time,
         trigger: record.trigger,
         symptom: record.symptom,
         treatment: record.treatment,
-        comment: record.comment,
+        comment: xss(record.comment),
+        }
     }
+}
 }
 
 function makeRecordsFixtures() {
