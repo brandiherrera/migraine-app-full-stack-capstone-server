@@ -32,6 +32,7 @@ const serializeRecord = record => ({
     comment: xss(record.comment),
 })
 
+// All users
 usersRouter
     .route('/')
     .get((req, res, next) => {
@@ -85,6 +86,7 @@ usersRouter
             .catch(next)
     })
 
+// Individual users by id
 usersRouter
     .route('/:user_id')
     .all((req, res, next) => {
@@ -116,6 +118,7 @@ usersRouter
             .catch(next)
     })
 
+// Individual user, all records -- GET (all), POST, DELETE (all, not used in app)
 usersRouter
     .route('/:user_id/records')
     .all(requireAuth)
@@ -174,6 +177,7 @@ usersRouter
             .catch(next)
     })
 
+// Individual user, individual record -- GET (record by id), DELETE (record by id)
 usersRouter
     .route('/:user_id/records/:record_id')
     .all(requireAuth)
@@ -206,21 +210,22 @@ usersRouter
             })
             .catch(next)
     })
-         .patch(jsonParser, (req, res, next) => {
-            const { location, time, onset, intensity, trigger, symptom, treatment, comment } = req.body
-            const recordToUpdate = { location, time, onset, intensity, trigger, symptom, treatment, comment }
-        
-           RecordsService.updateRecord(
-             req.app.get('db'),
-             req.params.record_id,
-             recordToUpdate
-           )
-             .then(numRowsAffected => {
-               res.status(204).end()
-             })
-             .catch(next)
-          })
+    .patch(jsonParser, (req, res, next) => {
+        const { location, time, onset, intensity, trigger, symptom, treatment, comment } = req.body
+        const recordToUpdate = { location, time, onset, intensity, trigger, symptom, treatment, comment }
 
+        RecordsService.updateRecord(
+            req.app.get('db'),
+            req.params.record_id,
+            recordToUpdate
+        )
+            .then(numRowsAffected => {
+                res.status(204).end()
+            })
+            .catch(next)
+    })
+
+// Individual user stats -- GET (all)
 usersRouter
     .route('/:user_id/stats')
     .all(requireAuth)
@@ -246,7 +251,7 @@ usersRouter
                 if (!data) {
                     return res
                         // .status(404).json({ error: { message: `No records exist.` } })
-                    .send({ error: { message: `No statistic recorded yet.` } })
+                        .send({ error: { message: `No statistic recorded yet.` } })
                 }
                 res.data = data
                 next()
