@@ -86,44 +86,45 @@ describe('Records Endpoints', () => {
             //         .set('authorization', helpers.makeAuthHeader(validUser))
             //         .expect(200, /*serializeRecord(userRecords)*/ userRecords)
             // })
-            it.skip('responds with 200 and all of the records', () => {
-                const expectedRecords = testRecords.map(record =>
-                    helpers.makeExpectedRecord(
-                        testUsers,
-                        record,
-                    )
-                )
-                return supertest(app)
-                    .get('/api/records')
-                    .set('authorization', `bearer ${process.env.API_TOKEN}`)
-                    .expect(200, expectedRecords)
-            })
+
+            // it.skip('responds with 200 and all of the records', () => {
+            //     const expectedRecords = testRecords.map(record =>
+            //         helpers.makeExpectedRecord(
+            //             testUsers,
+            //             record,
+            //         )
+            //     )
+            //     return supertest(app)
+            //         .get('/api/records')
+            //         .set('authorization', `bearer ${process.env.API_TOKEN}`)
+            //         .expect(200, expectedRecords)
+            // })
         })
     })
 
-    describe.skip('GET /api/records', () => {
+    // describe.skip('GET /api/records', () => {
 
-        context('Given there are records in the database', () => {
-            beforeEach('insert records', () =>
-                helpers.seedRecordsTables(
-                    db,
-                    testUsers,
-                    testRecords
-                )
-            )
-            it('responds with 200 and all of the records', () => {
-                const expectedRecords = testRecords.map(record =>
-                    helpers.makeExpectedRecord(
-                        testUsers,
-                        record,
-                    )
-                )
-                return supertest(app)
-                    .get('/api/records')
-                    .set('authorization', `bearer ${process.env.API_TOKEN}`)
-                    .expect(200, expectedRecords)
-            })
-        })
+    //     context('Given there are records in the database', () => {
+    //         beforeEach('insert records', () =>
+    //             helpers.seedRecordsTables(
+    //                 db,
+    //                 testUsers,
+    //                 testRecords
+    //             )
+    //         )
+    //         it('responds with 200 and all of the records', () => {
+    //             const expectedRecords = testRecords.map(record =>
+    //                 helpers.makeExpectedRecord(
+    //                     testUsers,
+    //                     record,
+    //                 )
+    //             )
+    //             return supertest(app)
+    //                 .get('/api/records')
+    //                 .set('authorization', `bearer ${process.env.API_TOKEN}`)
+    //                 .expect(200, expectedRecords)
+    //         })
+    //     })
 
-    })
+    // })
 })
