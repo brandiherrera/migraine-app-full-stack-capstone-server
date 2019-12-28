@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-
 describe('Users Endpoints', function () {
     let db
 
@@ -157,9 +156,9 @@ describe('Users Endpoints', function () {
 
                                 return bcrypt.compare(newUser.password, row.password)
                             })
-                                       .then(compareMatch => {
-                                             expect(compareMatch).to.be.true
-                                           })
+                            .then(compareMatch => {
+                                expect(compareMatch).to.be.true
+                            })
                     )
             })
         })

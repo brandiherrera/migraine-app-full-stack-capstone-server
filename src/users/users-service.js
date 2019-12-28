@@ -44,7 +44,6 @@ const UsersService = {
     serializeRecord(record){
         return {
         id: record.id,
-        // date_created: new Date(record.date_created),
         intensity: record.intensity,
         location: record.location,
         onset: record.onset,
@@ -70,16 +69,6 @@ const UsersService = {
             .select('*')
             .where('user_id', id)
     },
-    // getHighestTrigger(knex, id) {
-    //     return knex
-    //         .from('migraine_records')
-    //         .where('user_id', id)
-    //         .select('trigger')
-    //         .count('*')
-    //         .groupBy('trigger')
-    //         .orderBy('count', 'desc')
-    //         .first()
-    // },
     getHighestStat(knex, id) {
         return knex
             .from('migraine_records')
@@ -92,12 +81,6 @@ const UsersService = {
             .select('symptom').count('*').groupBy('symptom').orderBy('count', 'desc').first()
             .select('treatment').count('*').groupBy('treatment').orderBy('count', 'desc').first()
     }
-    // deleteRecordById(knex, id) {
-    //     return knex
-    //         .from('migraine_records')
-    //         .where( {id}  AND ('user_id', user_id))
-    //         .delete()
-    // }
 }
 
 module.exports = UsersService

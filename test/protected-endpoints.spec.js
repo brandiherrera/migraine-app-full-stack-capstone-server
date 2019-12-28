@@ -1,7 +1,6 @@
 const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
-// const { requireAuth } = require('../src/middleware/jwt-auth')
 
 describe('Protected endpoints', function () {
     let db
@@ -55,8 +54,6 @@ describe('Protected endpoints', function () {
             
             it(`responds 401 'Missing bearer token' when no bearer token`, () => {
                 return endpoint.method(endpoint.path)
-                // return supertest(app)
-                // .get(endpoint.path)
                     .expect(401, { error: `Missing bearer token` })
             })
 
@@ -74,55 +71,6 @@ describe('Protected endpoints', function () {
                     .set('Authorization', helpers.makeAuthHeader(invalidUser))
                     .expect(401, { error: `Unauthorized request` })
             })
-
-            // it(`responds with 200 and an empty list`, () => {
-            //     before('cleanup', () => helpers.cleanTables(db))
-            //     const validUser = testUsers[0]
-            //     return endpoint.method(endpoint.path)
-            //     // return supertest(app)
-            //         // .get('/api/users/:user_id/records')
-            //         // .set('Authorization', `bearer ${process.env.API_TOKEN}`)
-            //         .set('Authorization', helpers.makeAuthHeader(validUser))
-            //         .expect(200, [])
-            // })
         })
     })
-    // protectedEndpoints[0].map(endpoint => {
-    //     describe('GET /api/users/:user_id/records', () => {
-    //         context(`Given no records`, () => {
-    //             it(`responds with 200 and an empty list`, () => {
-    //                 const validUser = testUsers[0]
-    //                 return endpoint.method(endpoint.path)
-    //                 // return supertest(app)
-    //                     // .get('/api/users/:user_id/records')
-    //                     // .set('Authorization', `bearer ${process.env.API_TOKEN}`)
-    //                     .set('Authorization', helpers.makeAuthHeader(validUser))
-    //                     .expect(200, [])
-    //             })
-    //         })
-    
-    //         context('Given there are records in the database', () => {
-    //             beforeEach('insert records', () =>
-    //                 helpers.seedRecordsTables(
-    //                     db,
-    //                     testUsers,
-    //                     testRecords
-    //                 )
-    //             )
-    //             it('responds with 200 and all of the records', () => {
-    //                 const validUser = testUsers[0]
-    //                 const expectedRecords = testRecords.map(record =>
-    //                     helpers.makeExpectedRecord(
-    //                         testUsers,
-    //                         record,
-    //                     )
-    //                 )
-    //                 return supertest(app)
-    //                     .get('/api/users/:user_id/records')
-    //                     .set('authorization', helpers.makeAuthHeader(validUser))
-    //                     .expect(200, expectedRecords)
-    //             })
-    //         })
-    //     })
-    // })
 })
