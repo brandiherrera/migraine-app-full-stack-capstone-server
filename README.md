@@ -85,17 +85,17 @@ As a returning user I want to access a log out so I can log out at my convenienc
 ## API Documentation
 
 ### Users Endpoints
-*Private `/users/:user_id` endpoints require an `authorization` header with value of `bearer YOUR_AUTH_TOKEN_HERE` which is assigned upon signing up for an account.
+*Private `/users/:user_id` endpoints require an `authorization` header with value of `bearer YOUR_AUTH_TOKEN_HERE` which is assigned upon signing up for an account.*
 
-#### POST `api/users`
+### POST `api/users`
 
 Adds a new user to the user database which enables them to use their account to record and track the data they input. 
 
-#### POST `api/auth/login`
+### POST `api/auth/login`
 
 Allows a user in the database to "login" with their correct credentials. Returns the authToken and userId which allows them access to their private information on the secure `/users/:user_id` endpoints as below.
 
-#### GET `api/users/:user_id/stats`
+### GET `api/users/:user_id/stats`
 
 Returns the highest statistics for the logged-in user so they can quickly view their most recurring data on their dashboard upon login.
 
@@ -114,7 +114,7 @@ Returns the highest statistics for the logged-in user so they can quickly view t
 }
 ```
 
-#### GET `api/users/:user_id/records`
+### GET `api/users/:user_id/records`
 
 Allows a logged-in user to access all of their records they have recorded by returning an array of the data.
 
@@ -137,13 +137,13 @@ Allows a logged-in user to access all of their records they have recorded by ret
 ]
 ```
 
-#### DELETE `api/users/:user_id/records/:record_id`
+### DELETE `api/users/:user_id/records/:record_id`
 
 Allows a logged-in user to delete a record using the `record_id` of the corresponding record.
 
 A successful `DELETE` responds with `204 No Content`.
 
-#### POST `api/users/:user_id/records`
+### POST `api/users/:user_id/records`
 
 Allows a logged-in user to record a migraine with their relevant data.
 
