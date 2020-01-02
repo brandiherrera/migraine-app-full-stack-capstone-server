@@ -7,7 +7,7 @@ This migraine app allows users to record their migraines along with details of t
 
 [My-Brain Tracker React Repo](https://github.com/brandiherrera/migraine-app-full-stack-capstone-react)
 
-[Live My-Brain Tracker Application](https://brandiherrera-migraine-app-full-stack-capstone-react.now.sh/)
+[Live My-Brain Tracker Application](https://migraine-app-full-stack-capstone-react.brandiherrera.now.sh/)
 
 ## Site Map: MVP
 
