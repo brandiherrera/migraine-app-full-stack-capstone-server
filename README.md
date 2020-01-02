@@ -51,26 +51,129 @@ As a returning user I want to access a log out so I can log out at my convenienc
 <span><img src="./screenshots/landing-page-1.png" alt="landing page">
 <img src="./screenshots/landing-page-2.png" alt="Remaining landing page"></span>
 
-**Sign Up Page**
+### **Sign Up Page**
+
+#### POST `api/users`
 
 <img src="./screenshots/signup.png" alt="Signup page">
 
-**Log In Page**
+### **Log In Page**
+
+#### POST `api/auth/login`
 
 <img src="./screenshots/login.png" alt="Login page">
 
-**Dashboard**
+### **Dashboard**
+
+#### GET `api/users/:user_id/stats`
 
 <img src="./screenshots/dashboard.png" alt="Dashboard">
 
-**Migraine Tracker**
+### **Migraine Tracker**
+
+#### GET `api/users/:user_id/records` <br> DELETE `api/users/:user_id/records/:record_id`
 
 <img src="./screenshots/tracker.png" alt="Tracker page with user records">
 
-**Record a Migraine**
+### **Record a Migraine**
+
+#### POST `api/users/:user_id/records`
 
 <img src="./screenshots/record-migraine-1.png" alt="Record migraine form">
 <img src="./screenshots/record-migraine-2.png" alt="Remaining record migraine form">
+
+## API Documentation
+
+### Users Endpoints
+*Private `/users/:user_id` endpoints require an `authorization` header with value of `bearer YOUR_AUTH_TOKEN_HERE` which is assigned upon signing up for an account.
+
+#### POST `api/users`
+
+Adds a new user to the user database which enables them to use their account to record and track the data they input. 
+
+#### POST `api/auth/login`
+
+Allows a user in the database to "login" with their correct credentials. Returns the authToken and userId which allows them access to their private information on the secure `/users/:user_id` endpoints as below.
+
+#### GET `api/users/:user_id/stats`
+
+Returns the highest statistics for the logged-in user so they can quickly view their most recurring data on their dashboard upon login.
+
+**Example response**
+```JSON
+{
+    "location": "Home",
+    "count": "5",
+    "time": "Morning",
+    "onset": "Prodrome",
+    "intensity": 1,
+    "avg": "1.00000000000000000000",
+    "trigger": "Lack of sleep",
+    "symptom": "Pounding",
+    "treatment": "Medicine"
+}
+```
+
+#### GET `api/users/:user_id/records`
+
+Allows a logged-in user to access all of their records they have recorded by returning an array of the data.
+
+**Example response**
+```JSON
+[
+    {
+        "id": 8,
+        "user_id": 1,
+        "date_created": "2019-12-17T22:00:19.407Z",
+        "location": "Work",
+        "time": "Morning",
+        "onset": "Hunger",
+        "intensity": 9,
+        "trigger": "Anxiety",
+        "symptom": "Pounding pain",
+        "treatment": "Cold compress",
+        "comment": "This attack began in my sleep."
+    }
+]
+```
+
+#### DELETE `api/users/:user_id/records/:record_id`
+
+Allows a logged-in user to delete a record using the `record_id` of the corresponding record.
+
+A successful `DELETE` responds with `204 No Content`.
+
+#### POST `api/users/:user_id/records`
+
+Allows a logged-in user to record a migraine with their relevant data.
+
+**Example request body**
+```JSON
+{
+    "location": "Work",
+    "time": "Morning",
+    "onset": "Hunger",
+    "intensity": 6,
+    "trigger": "Anxiety",
+    "symptom": "Pounding",
+    "treatment": "Cold compress",
+    "comment": "This attack began in my sleep."
+}
+```
+**Example response body**
+```JSON
+{
+    "id": 76,
+    "intensity": 6,
+    "location": "Work",
+    "onset": "Hunger",
+    "symptom": "Pounding",
+    "time": "Morning",
+    "trigger": "Anxiety",
+    "treatment": "Cold compress",
+    "comment": "This attack began in my sleep."
+}
+```
 
 ## Technology Used
 
@@ -88,8 +191,10 @@ As a returning user I want to access a log out so I can log out at my convenienc
 
 ## Scripts
 
+Install node modules `npm install`
+
+Run the tests `npm test`
+
 Start the application `npm start`
 
 Start nodemon for the application `npm run dev`
-
-Run the tests `npm test`

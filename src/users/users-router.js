@@ -20,7 +20,6 @@ const serializeUser = user => ({
 
 const serializeRecord = record => ({
     id: record.id,
-    // date_created: new Date(record.date_created),
     intensity: record.intensity,
     location: record.location,
     onset: record.onset,
@@ -69,7 +68,6 @@ usersRouter
                             last_name,
                             email,
                             password: hashedPassword,
-                            // date_created: 'now()',
                         }
                         return UsersService.insertUser(
                             req.app.get('db'),
@@ -138,9 +136,6 @@ usersRouter
     .get((req, res) => {
         res.json(res.record)
     })
-    // .get((req, res, next) => {
-    //     res.json(UsersService.serializeRecord(res.record))
-    // })
     .post(requireAuth, jsonParser, (req, res, next) => {
         const { location, time, onset, intensity, trigger, symptom, treatment, comment } = req.body
         const newRecord = { location, time, onset, intensity, trigger, symptom, treatment, comment }
@@ -160,7 +155,6 @@ usersRouter
             .then(record => {
                 res
                     .status(201)
-                    // .location(path.posix.join(req.originalUrl, `${req.user.id}/records/${record.id}`))
                     .json(serializeRecord(record))
             })
             .catch(next)
@@ -229,28 +223,12 @@ usersRouter
 usersRouter
     .route('/:user_id/stats')
     .all(requireAuth)
-    // .all((req, res, next) => {
-    //     const { user_id } = req.params;
-    //     UsersService.getHighestTrigger(req.app.get('db'), user_id)
-    //         .then(trigger => {
-    //             if (!trigger) {
-    //                 return res
-    //                     // .status(404).json({ error: { message: `No records exist.` } })
-    //                 .send({ error: { message: `No triggers recorded yet.` } })
-    //             }
-    //             res.trigger = trigger
-    //             next()
-    //         })
-    //         .catch(next)
-    // })
     .all((req, res, next) => {
         const { user_id, location, time, onset, intensity, trigger, symptom, treatment } = req.params;
-        // let stat = [ location, time, onset, intensity, trigger, symptom, treatment, comment ]
         UsersService.getHighestStat(req.app.get('db'), user_id, location, time, onset, intensity, trigger, symptom, treatment)
             .then(data => {
                 if (!data) {
                     return res
-                        // .status(404).json({ error: { message: `No records exist.` } })
                         .send({ error: { message: `No statistic recorded yet.` } })
                 }
                 res.data = data
@@ -261,39 +239,5 @@ usersRouter
     .get((req, res) => {
         res.json(res.data)
     })
-// recordsRouter
-// .route('/:user_id/records')
-// // .all(requireAuth)
-// .get((req, res, next) => {
-//     RecordsService.getAllRecords(req.app.get('db'))
-//     .then(records => {
-//         res.json(records)
-//     })
-//     .catch(next)
-// })
-// .post(requireAuth, jsonParser, (req, res, next) => {
-//     const { /*date_created,*/ trigger, symptom, treatment, comment } = req.body
-//     const newRecord = { /*date_created,*/ trigger, symptom, treatment, comment } 
-
-//     for (const [key, value] of Object.entries(newRecord)) 
-//         if (value == null) 
-//             return res.status(400).json({
-//                 error: {message: `Missing '${key}' in request body`}
-//             })
-
-//         newRecord.user_id = req.user.id
-
-//     RecordsService.insertRecord(
-//         req.app.get('db'),
-//         newRecord
-//     )
-//         .then(record => {
-//             res
-//                 .status(201)
-//                 .location(path.posix.join(req.originalUrl, `${record.id}`))
-//                 .json(serializeRecord(record))
-//         })
-//         .catch(next)
-// })
 
 module.exports = usersRouter
