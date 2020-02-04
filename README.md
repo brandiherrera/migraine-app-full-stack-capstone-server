@@ -46,9 +46,9 @@ As a returning user I want to access a log out so I can log out at my convenienc
 
 ## Live Screenshots
 
-**Landing Page**
+### **Landing Page**
 
-<span><img src="./screenshots/landing-page-1.png" alt="landing page">
+<span><img src="./screenshots/landing-page-1.png" alt="Landing page">
 <img src="./screenshots/landing-page-2.png" alt="Remaining landing page"></span>
 
 ### **Sign Up Page**
@@ -182,6 +182,7 @@ Allows a logged-in user to record a migraine with their relevant data.
 * CSS3
 * JavaScript
 * React
+* Jest and Enzyme for testing
   
 <b>Back End</b>
 * Node.js
